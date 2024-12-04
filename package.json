@@ -1,0 +1,22 @@
+{
+  "name": "quiz-game",
+  "version": "1.0.0",
+  "description": "Assignment2",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "AndreiKoshelev, Student ID: 100894383",
+  "license": "ISC",
+  "resolutions": {
+    "moment": "^2.29.4",
+    "moment-timezone": "^0.5.34"
+  },
+  "dependencies": {
+    "@11ty/eleventy": "^2.0.1",
+    "@tryghost/content-api": "^1.11.21",
+    "ghost-cli": "^1.26.1"
+  },
+  "type": "commonjs"
+}

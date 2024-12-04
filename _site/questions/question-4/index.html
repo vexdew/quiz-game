@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/css/index.css">
+    <title>Question 4: Which country is famous for its tulips and windmills?</title>
+</head>
+<body>
+    <header>
+      The Global Explorer: Geography Trivia Adventure
+    </header>
+
+    <div class="container">
+        
+<div class="question-container">
+  <h2 class="question-title">Question 4: Which country is famous for its tulips and windmills?</h2>
+  <div class="options-container">
+    <p>Options:</p>
+    <ul class="options-list">
+      
+        <li>
+          <label>
+            <input type="radio" name="answer" value="A. Belgium">
+            A. Belgium
+          </label>
+        </li>
+      
+        <li>
+          <label>
+            <input type="radio" name="answer" value="B. Germany">
+            B. Germany
+          </label>
+        </li>
+      
+        <li>
+          <label>
+            <input type="radio" name="answer" value="C. Netherlands">
+            C. Netherlands
+          </label>
+        </li>
+      
+        <li>
+          <label>
+            <input type="radio" name="answer" value="D. Switzerland">
+            D. Switzerland
+          </label>
+        </li>
+      
+    </ul>
+  </div>
+  <div class="button-container">
+    <button type="button" id="checkButton" class="btn">Check</button>
+    <button type="button" id="nextButton" class="btn" style="display: none;">Next Question</button>
+  </div>
+  <p class="feedback" id="feedback"></p>
+</div>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Questions URLs
+    const questionUrls = [{"title":"Question 1: What is the capital of France?","options":["A. Berlin","B. Madrid","C. Paris","D. Rome"],"correctAnswer":"C","url":"questions/question-1/"},{"title":"Question 2: Which country is known for the ancient Colosseum?","options":["A. Greece","B. France","C. Italy","D. Spain"],"correctAnswer":"C","url":"questions/question-2/"},{"title":"Question 3: Which country is known as the Land of the Rising Sun?","options":["A. Japan","B. China","C. Thailand","D. South Korea"],"correctAnswer":"A","url":"questions/question-3/"},{"title":"Question 4: Which country is famous for its tulips and windmills?","options":["A. Belgium","B. Germany","C. Netherlands","D. Switzerland"],"correctAnswer":"C","url":"questions/question-4/"},{"title":"Question 5: Which country has the longest coastline in Europe?","options":["A. Greece","B. Norway","C. Italy","D. Turkey"],"correctAnswer":"B","url":"questions/question-5/"},{"title":"Question 6: Which European country has the highest population?","options":["A. France","B. United Kingdom","C. Germany","D. Italy"],"correctAnswer":"C","url":"questions/question-6/"},{"title":"Question 7: Which European country is the Acropolis located in?","options":["A. Italy","B. Greece","C. Turkey","D. Cyprus"],"correctAnswer":"B","url":"questions/question-7/"},{"title":"Question 8: Which country is famous for the traditional Oktoberfest?","options":["A. Austria","B. Belgium","C. Switzerland","D. Germany"],"correctAnswer":"D","url":"questions/question-8/"},{"title":"Question 9: The city of Bruges, known for its medieval architecture and canals, is in which country?","options":["A. Netherlands","B. Belgium","C. Luxembourg","D. France"],"correctAnswer":"B","url":"questions/question-9/"},{"title":"Question 10: Which country is famous for its fjords?","options":["A. Sweden","B. Norway","C. Finland","D. Denmark"],"correctAnswer":"B","url":"questions/question-10/"}];
+    const currentUrl = "questions/question-4/";
+
+    // Add event listeners to buttons
+    const checkButton = document.getElementById("checkButton");
+    if (checkButton) {
+      checkButton.addEventListener("click", checkAnswer);
+    }
+
+    const nextButton = document.getElementById("nextButton");
+    if (nextButton) {
+      nextButton.addEventListener("click", goToNextQuestion);
+    }
+
+    function checkAnswer() {
+      console.log("checkAnswer function called");
+
+      const selectedOption = document.querySelector('input[name="answer"]:checked');
+      const feedback = document.getElementById("feedback");
+
+      feedback.innerHTML = '';
+      feedback.className = 'feedback';
+      document.querySelectorAll('.options-list li').forEach(li => li.classList.remove('correct-answer', 'incorrect-answer'));
+
+      if (!selectedOption) {
+        feedback.innerHTML = "Please select an answer.";
+        feedback.classList.add('error');
+        return;
+      }
+
+      const correctAnswer = "C".trim().toUpperCase();
+      const selectedAnswer = selectedOption.value.trim().toUpperCase();
+
+      console.log("Correct Answer:", correctAnswer);
+      console.log("Selected Answer:", selectedAnswer);
+
+      const correctOption = Array.from(document.querySelectorAll('input[name="answer"]'))
+          .find(option => option.value.trim().toUpperCase().startsWith(correctAnswer));
+
+      if (correctOption) {
+        correctOption.closest('li').classList.add('correct-answer');
+      }
+
+      if (selectedAnswer.startsWith(correctAnswer)) {
+        feedback.innerHTML = "Correct!";
+        feedback.classList.add('correct');
+      } else {
+        feedback.innerHTML = `Incorrect! The correct answer is: ${correctAnswer}`;
+        feedback.classList.add('incorrect');
+
+        const incorrectOption = selectedOption.closest('li');
+        if (incorrectOption) {
+          incorrectOption.classList.add('incorrect-answer');
+        }
+      }
+
+      document.querySelectorAll('input[name="answer"]').forEach(option => option.disabled = true);
+      nextButton.style.display = 'block';
+    }
+
+    function goToNextQuestion() {
+      const currentIndex = questionUrls.findIndex(q => q.url === currentUrl);
+
+      console.log("Current Index:", currentIndex);
+      console.log("Current URL:", currentUrl);
+      console.log("Question URLs:", questionUrls);
+
+      if (currentIndex !== -1 && currentIndex < questionUrls.length - 1) {
+        // Get the next URL directly from the array without modifications
+        const nextUrl = questionUrls[currentIndex + 1].url;
+
+        console.log("Navigating to:", nextUrl);
+        window.location.href = `/${nextUrl}`;
+      } else {
+        alert("You've reached the end of the quiz!");
+        window.location.href = "/";
+      }
+    }
+
+  });
+</script>
+
+    </div>
+
+    <footer>
+      &copy; 2024 Andrei Koshelev, INFT-3102-03. All rights reserved.
+    </footer>
+</body>
+</html>

@@ -1,0 +1,12 @@
+---
+layout: layout.html
+---
+<h1>Welcome to the Geography Quiz! </h1>
+<button id="startQuiz">Start Quiz</button>
+<script>
+    // Dynamically redirect the user to the first question
+    document.getElementById("startQuiz").addEventListener("click", () => {
+        window.location.href = "/questions/question-1/";
+    });
+</script>
+

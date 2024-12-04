@@ -1,0 +1,175 @@
+/* CSS Rules */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #808080;
+  background-image: url('/images/background.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  color: #333;
+}
+
+header {
+  width: 100%;
+  background-color: #9370DB;
+  padding: 20px;
+  text-align: center;
+  color: white;
+  font-size: 1.5rem;
+}
+
+footer {
+  width: 100%;
+  background-color: #333;
+  padding: 10px;
+  text-align: center;
+  color: #ffffff;
+  font-size: 0.875rem;
+  margin-top: auto;
+}
+
+.container {
+  max-width: 800px;
+  width: 100%;
+  padding: 20px;
+  background-color: #d3d3d3;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin: 20px auto;
+  text-align: center;
+}
+
+h1 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.options-label {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.options-list {
+  list-style-type: none;
+  padding-left: 0;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.options-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 8px 0;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #e6f7ff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.options-list li:hover {
+  background-color: #cce7ff;
+}
+
+.correct-answer {
+  border: 2px solid #4CAF50;
+  color: #4CAF50;
+  font-weight: bold;
+  background-color: #e0f7e9;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.incorrect-answer {
+  border: 2px solid #F44336;
+  color: #F44336;
+  font-weight: bold;
+  background-color: #fbe3e4;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.feedback {
+  font-size: 16px;
+  text-align: center;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+/* Button container styling */
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* Button styling */
+.btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007BFF;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
+
+.btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.score {
+  color: #007BFF;
+  font-weight: bold;
+}
+
+a {
+  text-decoration: none;
+  color: #007BFF;
+}
+
+a:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+#startQuiz {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 10px auto;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+#startQuiz:hover {
+  background-color: #45a049;
+}
+

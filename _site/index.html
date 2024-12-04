@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/css/index.css">
+    <title>Geography Quiz</title>
+</head>
+<body>
+    <header>
+      The Global Explorer: Geography Trivia Adventure
+    </header>
+
+    <div class="container">
+        <h1>Welcome to the Geography Quiz! </h1>
+<button id="startQuiz">Start Quiz</button>
+<script>
+    // Dynamically redirect the user to the first question
+    document.getElementById("startQuiz").addEventListener("click", () => {
+        window.location.href = "/questions/question-1/";
+    });
+</script>
+
+
+    </div>
+
+    <footer>
+      &copy; 2024 Andrei Koshelev, INFT-3102-03. All rights reserved.
+    </footer>
+</body>
+</html>
