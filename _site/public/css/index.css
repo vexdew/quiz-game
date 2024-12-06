@@ -156,7 +156,7 @@ a:hover {
 }
 
 #startQuiz {
-  background-color: #4CAF50; /* Green */
+  background-color: #4CAF50;
   border: none;
   color: white;
   padding: 15px 32px;
@@ -172,4 +172,3 @@ a:hover {
 #startQuiz:hover {
   background-color: #45a049;
 }
-

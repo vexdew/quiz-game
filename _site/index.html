@@ -12,15 +12,101 @@
     </header>
 
     <div class="container">
-        <h1>Welcome to the Geography Quiz! </h1>
-<button id="startQuiz">Start Quiz</button>
+        <h1>Welcome to the Geography Quiz!</h1>
+<div class="container">
+  <button id="startQuiz" class="btn">Start Quiz</button>
+</div>
+
+<div class="container">
+  <h2>Quiz Attempts</h2>
+  <table id="attemptsTable" class="attempts-table">
+    <thead>
+      <tr>
+        <th>Attempt</th>
+        <th>Score</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Rows will be dynamically inserted here -->
+    </tbody>
+  </table>
+</div>
+
 <script>
-    // Dynamically redirect the user to the first question
-    document.getElementById("startQuiz").addEventListener("click", () => {
-        window.location.href = "/questions/question-1/";
+  document.getElementById("startQuiz").addEventListener("click", () => {
+    fetch("/.netlify/functions/getQuestions")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((questions) => {
+        if (questions.length > 0) {
+          // Reset score for the new attempt
+          localStorage.setItem("quizScore", 0);
+          localStorage.setItem("currentAttempt", Number(localStorage.getItem("currentAttempt") || 0) + 1);
+          window.location.href = questions[0].url;
+        } else {
+          alert("No questions available.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching questions:", error);
+        alert("Failed to load questions. Please try again later.");
+      });
+  });
+
+  // Function to populate the table with quiz attempts
+  function loadAttempts() {
+    const attemptsTableBody = document.querySelector("#attemptsTable tbody");
+    const attempts = JSON.parse(localStorage.getItem("quizAttempts")) || [];
+
+    // Clear the table body
+    attemptsTableBody.innerHTML = "";
+
+    attempts.forEach((attempt, index) => {
+      const row = document.createElement("tr");
+      row.innerHTML = `<td>${index + 1}</td><td>${attempt.score}</td>`;
+      attemptsTableBody.appendChild(row);
     });
+  }
+
+  // Clear attempts when the site is reopened after being closed
+  function clearTableOnReopen() {
+    if (!sessionStorage.getItem("sessionActive")) {
+      // First load after browser close: clear attempts
+      localStorage.removeItem("quizAttempts");
+      sessionStorage.setItem("sessionActive", "true");
+    }
+  }
+
+  // Run the clearTableOnReopen check
+  clearTableOnReopen();
+
+  // Populate the table on page load
+  loadAttempts();
 </script>
 
+
+<style>
+  .attempts-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+  }
+
+  .attempts-table th,
+  .attempts-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+
+  .attempts-table th {
+    background-color: #f4f4f4;
+  }
+</style>
 
     </div>
 

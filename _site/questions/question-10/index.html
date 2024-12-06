@@ -1,151 +1,110 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/public/css/index.css">
-    <title>Question 10: Which country is famous for its fjords?</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Question 10</title>
+  <link rel="stylesheet" href="/public/css/index.css">
 </head>
 <body>
-    <header>
-      The Global Explorer: Geography Trivia Adventure
-    </header>
+  <!-- Header -->
+  <header>
+    The Global Explorer: Geography Trivia Adventure
+  </header>
 
-    <div class="container">
+  <!-- Main Content -->
+  <div class="container">
+    <h1>Question 10: Which is the largest island in the world?</h1>
+    <form id="quizForm">
+      <ul class="options-list">
         
-<div class="question-container">
-  <h2 class="question-title">Question 10: Which country is famous for its fjords?</h2>
-  <div class="options-container">
-    <p>Options:</p>
-    <ul class="options-list">
-      
         <li>
-          <label>
-            <input type="radio" name="answer" value="A. Sweden">
-            A. Sweden
+          <label class="options-label">
+            <input type="radio" name="answer" value="Greenland">
+            A. Greenland
           </label>
         </li>
-      
+        
         <li>
-          <label>
-            <input type="radio" name="answer" value="B. Norway">
-            B. Norway
+          <label class="options-label">
+            <input type="radio" name="answer" value="New Guinea">
+            B. New Guinea
           </label>
         </li>
-      
+        
         <li>
-          <label>
-            <input type="radio" name="answer" value="C. Finland">
-            C. Finland
+          <label class="options-label">
+            <input type="radio" name="answer" value="Borneo">
+            C. Borneo
           </label>
         </li>
-      
+        
         <li>
-          <label>
-            <input type="radio" name="answer" value="D. Denmark">
-            D. Denmark
+          <label class="options-label">
+            <input type="radio" name="answer" value="Madagascar">
+            D. Madagascar
           </label>
         </li>
-      
-    </ul>
+        
+      </ul>
+      <div class="feedback" id="feedback"></div>
+      <div class="button-container">
+        <button type="button" class="btn" id="checkAnswer">Check</button>
+        
+      </div>
+    </form>
   </div>
-  <div class="button-container">
-    <button type="button" id="checkButton" class="btn">Check</button>
-    <button type="button" id="nextButton" class="btn" style="display: none;">Next Question</button>
-  </div>
-  <p class="feedback" id="feedback"></p>
-</div>
 
+  <!-- Footer -->
+  <footer>
+    © 2024 Andrei Koshelev, INFT-3102-03. All rights reserved.
+  </footer>
 
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    // Questions URLs
-    const questionUrls = [{"title":"Question 1: What is the capital of France?","options":["A. Berlin","B. Madrid","C. Paris","D. Rome"],"correctAnswer":"C","url":"questions/question-1/"},{"title":"Question 2: Which country is known for the ancient Colosseum?","options":["A. Greece","B. France","C. Italy","D. Spain"],"correctAnswer":"C","url":"questions/question-2/"},{"title":"Question 3: Which country is known as the Land of the Rising Sun?","options":["A. Japan","B. China","C. Thailand","D. South Korea"],"correctAnswer":"A","url":"questions/question-3/"},{"title":"Question 4: Which country is famous for its tulips and windmills?","options":["A. Belgium","B. Germany","C. Netherlands","D. Switzerland"],"correctAnswer":"C","url":"questions/question-4/"},{"title":"Question 5: Which country has the longest coastline in Europe?","options":["A. Greece","B. Norway","C. Italy","D. Turkey"],"correctAnswer":"B","url":"questions/question-5/"},{"title":"Question 6: Which European country has the highest population?","options":["A. France","B. United Kingdom","C. Germany","D. Italy"],"correctAnswer":"C","url":"questions/question-6/"},{"title":"Question 7: Which European country is the Acropolis located in?","options":["A. Italy","B. Greece","C. Turkey","D. Cyprus"],"correctAnswer":"B","url":"questions/question-7/"},{"title":"Question 8: Which country is famous for the traditional Oktoberfest?","options":["A. Austria","B. Belgium","C. Switzerland","D. Germany"],"correctAnswer":"D","url":"questions/question-8/"},{"title":"Question 9: The city of Bruges, known for its medieval architecture and canals, is in which country?","options":["A. Netherlands","B. Belgium","C. Luxembourg","D. France"],"correctAnswer":"B","url":"questions/question-9/"},{"title":"Question 10: Which country is famous for its fjords?","options":["A. Sweden","B. Norway","C. Finland","D. Denmark"],"correctAnswer":"B","url":"questions/question-10/"}];
-    const currentUrl = "questions/question-10/";
+  <script>
+    // Retrieve or initialize the score
+    let score = localStorage.getItem("quizScore") || 0;
+    const correctAnswer = "Greenland";
+    const feedback = document.getElementById("feedback");
+    const checkButton = document.getElementById("checkAnswer");
+    const nextQuestionLink = document.getElementById("nextQuestion");
 
-    // Add event listeners to buttons
-    const checkButton = document.getElementById("checkButton");
-    if (checkButton) {
-      checkButton.addEventListener("click", checkAnswer);
-    }
-
-    const nextButton = document.getElementById("nextButton");
-    if (nextButton) {
-      nextButton.addEventListener("click", goToNextQuestion);
-    }
-
-    function checkAnswer() {
-      console.log("checkAnswer function called");
-
+    // Handle checking the answer
+    checkButton.addEventListener("click", () => {
       const selectedOption = document.querySelector('input[name="answer"]:checked');
-      const feedback = document.getElementById("feedback");
-
-      feedback.innerHTML = '';
-      feedback.className = 'feedback';
-      document.querySelectorAll('.options-list li').forEach(li => li.classList.remove('correct-answer', 'incorrect-answer'));
-
-      if (!selectedOption) {
-        feedback.innerHTML = "Please select an answer.";
-        feedback.classList.add('error');
-        return;
-      }
-
-      const correctAnswer = "B".trim().toUpperCase();
-      const selectedAnswer = selectedOption.value.trim().toUpperCase();
-
-      console.log("Correct Answer:", correctAnswer);
-      console.log("Selected Answer:", selectedAnswer);
-
-      const correctOption = Array.from(document.querySelectorAll('input[name="answer"]'))
-          .find(option => option.value.trim().toUpperCase().startsWith(correctAnswer));
-
-      if (correctOption) {
-        correctOption.closest('li').classList.add('correct-answer');
-      }
-
-      if (selectedAnswer.startsWith(correctAnswer)) {
-        feedback.innerHTML = "Correct!";
-        feedback.classList.add('correct');
-      } else {
-        feedback.innerHTML = `Incorrect! The correct answer is: ${correctAnswer}`;
-        feedback.classList.add('incorrect');
-
-        const incorrectOption = selectedOption.closest('li');
-        if (incorrectOption) {
-          incorrectOption.classList.add('incorrect-answer');
+      if (selectedOption) {
+        const userAnswer = selectedOption.value;
+        if (userAnswer === correctAnswer) {
+          feedback.innerHTML = "<span class='correct-answer'>Correct!</span>";
+          score++;
+          localStorage.setItem("quizScore", score);
+        } else {
+          feedback.innerHTML = `<span class='incorrect-answer'>Incorrect! The correct answer is: ${correctAnswer}</span>`;
         }
-      }
-
-      document.querySelectorAll('input[name="answer"]').forEach(option => option.disabled = true);
-      nextButton.style.display = 'block';
-    }
-
-    function goToNextQuestion() {
-      const currentIndex = questionUrls.findIndex(q => q.url === currentUrl);
-
-      console.log("Current Index:", currentIndex);
-      console.log("Current URL:", currentUrl);
-      console.log("Question URLs:", questionUrls);
-
-      if (currentIndex !== -1 && currentIndex < questionUrls.length - 1) {
-        // Get the next URL directly from the array without modifications
-        const nextUrl = questionUrls[currentIndex + 1].url;
-
-        console.log("Navigating to:", nextUrl);
-        window.location.href = `/${nextUrl}`;
+        checkButton.disabled = true;
+        if (nextQuestionLink) nextQuestionLink.style.display = "inline-block";
       } else {
-        alert("You've reached the end of the quiz!");
-        window.location.href = "/";
+        feedback.innerHTML = "<span class='incorrect-answer'>Please select an answer.</span>";
       }
-    }
+    });
 
-  });
-</script>
-
-    </div>
-
-    <footer>
-      &copy; 2024 Andrei Koshelev, INFT-3102-03. All rights reserved.
-    </footer>
+    // Handle the last question
+    
+    checkButton.addEventListener("click", () => {
+      setTimeout(() => {
+        const totalQuestions = 10;
+        alert(`Great Job! You've scored ${score}/${totalQuestions}`);
+        
+        // Store the score and attempts in localStorage
+        const attempts = JSON.parse(localStorage.getItem("quizAttempts")) || [];
+        attempts.push({ attempt: attempts.length + 1, score: `${score}/${totalQuestions}` });
+        localStorage.setItem("quizAttempts", JSON.stringify(attempts));
+        
+        localStorage.removeItem("quizScore"); // Clear the score for the next quiz
+        window.location.href = "/"; // Redirect to main page
+      }, 500);
+    });
+    
+  </script>
 </body>
 </html>

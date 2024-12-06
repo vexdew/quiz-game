@@ -1,0 +1,10 @@
+{% for question in collections.questionPages %}
+---
+layout: "questions/question.njk"
+permalink: "{{ question.url }}"
+question: "{{ question.question }}"
+options: {{ question.options | jsonify }}
+answer: "{{ question.answer }}"
+nextQuestionUrl: "{{ question.nextQuestionUrl }}"
+---
+{% endfor %}

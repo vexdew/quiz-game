@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Question {{ question.id }}</title>
+  <link rel="stylesheet" href="/public/css/index.css">
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    The Global Explorer: Geography Trivia Adventure
+  </header>
+
+  <!-- Main Content -->
+  <div class="container">
+    <h1>Question {{ question.id }}: {{ question.question }}</h1>
+    <form id="quizForm">
+      <ul class="options-list">
+        {% for option in question.options %}
+        <li>
+          <label class="options-label">
+            <input type="radio" name="answer" value="{{ option }}">
+            {{ loop.index | alphabetize }}. {{ option }}
+          </label>
+        </li>
+        {% endfor %}
+      </ul>
+      <div class="feedback" id="feedback"></div>
+      <div class="button-container">
+        <button type="button" class="btn" id="checkAnswer">Check</button>
+        {% if question.nextQuestionUrl %}
+        <a href="{{ question.nextQuestionUrl }}" class="btn" id="nextQuestion" style="display: none;">Next Question</a>
+        {% endif %}
+      </div>
+    </form>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    © 2024 Andrei Koshelev, INFT-3102-03. All rights reserved.
+  </footer>
+
+  <script>
+    // Retrieve or initialize the score
+    let score = localStorage.getItem("quizScore") || 0;
+    const correctAnswer = "{{ question.answer }}";
+    const feedback = document.getElementById("feedback");
+    const checkButton = document.getElementById("checkAnswer");
+    const nextQuestionLink = document.getElementById("nextQuestion");
+
+    // Handle checking the answer
+    checkButton.addEventListener("click", () => {
+      const selectedOption = document.querySelector('input[name="answer"]:checked');
+      if (selectedOption) {
+        const userAnswer = selectedOption.value;
+        if (userAnswer === correctAnswer) {
+          feedback.innerHTML = "<span class='correct-answer'>Correct!</span>";
+          score++;
+          localStorage.setItem("quizScore", score);
+        } else {
+          feedback.innerHTML = `<span class='incorrect-answer'>Incorrect! The correct answer is: ${correctAnswer}</span>`;
+        }
+        checkButton.disabled = true;
+        if (nextQuestionLink) nextQuestionLink.style.display = "inline-block";
+      } else {
+        feedback.innerHTML = "<span class='incorrect-answer'>Please select an answer.</span>";
+      }
+    });
+
+    // Handle the last question
+    {% if not question.nextQuestionUrl %}
+    checkButton.addEventListener("click", () => {
+      setTimeout(() => {
+        const totalQuestions = {{ collections.questions.length }};
+        alert(`Great Job! You've scored ${score}/${totalQuestions}`);
+        
+        // Store the score and attempts in localStorage
+        const attempts = JSON.parse(localStorage.getItem("quizAttempts")) || [];
+        attempts.push({ attempt: attempts.length + 1, score: `${score}/${totalQuestions}` });
+        localStorage.setItem("quizAttempts", JSON.stringify(attempts));
+        
+        localStorage.removeItem("quizScore"); // Clear the score for the next quiz
+        window.location.href = "/"; // Redirect to main page
+      }, 500);
+    });
+    {% endif %}
+  </script>
+</body>
+</html>

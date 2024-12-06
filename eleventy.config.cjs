@@ -1,64 +1,54 @@
-const ghostContentAPI = require("@tryghost/content-api");
+const fs = require("fs");
+const path = require("path");
 
-// Initialize Ghost API
-const api = new ghostContentAPI({
-  url: "http://localhost:2368",
-  key: "17c3687944a011e6a983130bdd",
-  version: "v5.0",
-});
-
-// Adding the exports for images and css
 module.exports = function (eleventyConfig) {
-  eleventyConfig.addPassthroughCopy("./images");
-  eleventyConfig.addPassthroughCopy("./public");
+    // Add a "jsonify" filter for JSON output
+    eleventyConfig.addFilter("jsonify", function (value) {
+        return JSON.stringify(value, null, 2); // Pretty-print JSON
+    });
 
-  // Custom jsonify filter for Nunjucks
-  eleventyConfig.addFilter("jsonify", function (value) {
-    return JSON.stringify(value);
-  });
+    // Add "alphabetize" filter: Converts 1 to 'A', 2 to 'B', etc.
+    eleventyConfig.addFilter("alphabetize", (index) => {
+        return String.fromCharCode(64 + index); // 1 -> A, 2 -> B, etc.
+    });
 
-  // Fetch questions from Ghost CMS
-  eleventyConfig.addGlobalData("questions", async () => {
-    try {
-      const questions = await api.posts.browse({
-        filter: "tag:question",
-        fields: "title,html,url",
-      });
+    // Add passthrough copy for static files
+    eleventyConfig.addPassthroughCopy("./images");
+    eleventyConfig.addPassthroughCopy("./public");
 
-      // Sort questions by title in ascending order
-      questions.sort((a, b) => {
-        const numA = parseInt(a.title.match(/\d+/));
-        const numB = parseInt(b.title.match(/\d+/));
-        return numA - numB;
-      });
+    // Load questions from localQuestions.json
+    const questionsPath = path.resolve(__dirname, "localQuestions.json");
+    const questions = JSON.parse(fs.readFileSync(questionsPath, "utf-8"));
 
-      return questions.map((question) => {
-        const optionsMatch = question.html.match(/<ul>(.*?)<\/ul>/s);
-        const correctAnswerMatch = question.html.match(/Correct Answer: (\w)/);
+    // Dynamically generate pages for each question
+    eleventyConfig.addCollection("questions", () => {
+        return questions.map((question, index) => ({
+            ...question,
+            nextQuestionUrl: index + 1 < questions.length ? `/questions/question-${index + 2}/` : null,
+        }));
+    });
 
-        const options = optionsMatch
-          ? optionsMatch[1]
-              .match(/<li>(.*?)<\/li>/g)
-              .map((option) => option.replace(/<.?li>/g, "").trim())
-          : [];
+    // Generate question pages dynamically
+    questions.forEach((question, index) => {
+        const questionDirPath = path.join(__dirname, `questions/question-${index + 1}`);
+        const questionFilePath = path.join(questionDirPath, "index.njk");
 
-        const correctAnswer = correctAnswerMatch
-          ? correctAnswerMatch[1].trim()
-          : "";
+        // Ensure the directory exists
+        if (!fs.existsSync(questionDirPath)) {
+            fs.mkdirSync(questionDirPath, { recursive: true });
+        }
 
-        const questionNumber = parseInt(question.title.match(/\d+/));
+        // Write the template file
+        fs.writeFileSync(
+            questionFilePath,
+            `{% set question = collections.questions[${index}] %}\n{% include "question.njk" %}`
+        );
+    });
 
-        return {
-          title: question.title,
-          options,
-          correctAnswer,
-          url: `questions/question-${questionNumber}/`, // Correctly formatted URL using template literal
-
-        };
-      });
-    } catch (err) {
-      console.error("Error fetching questions:", err);
-      return [];
-    }
-  });
+    return {
+        dir: {
+            input: ".",
+            output: "_site",
+        },
+    };
 };

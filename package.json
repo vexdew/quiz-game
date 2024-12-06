@@ -16,7 +16,8 @@
   "dependencies": {
     "@11ty/eleventy": "^2.0.1",
     "@tryghost/content-api": "^1.11.21",
-    "ghost-cli": "^1.26.1"
+    "ghost-cli": "^1.26.1",
+    "node-fetch": "^2.7.0"
   },
   "type": "commonjs"
 }
